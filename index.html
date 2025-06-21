@@ -1,94 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mi Portafolio - Yeison</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <header>
-    <h1>Yeison Patiño</h1>
-    <nav>
-      <a href="#about">Sobre mí</a>
-      <a href="#projects">Proyectos</a>
-      <a href="#contact">Contacto</a>
-      <a id="login-btn" href="#">Iniciar sesión</a>
-    </nav>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi Portafolio - Yeison</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Yeison Patiño</h1>
+      <nav>
+        <a href="#about">Sobre mí</a>
+        <a href="#projects">Proyectos</a>
+        <a href="#contact">Contacto</a>
+        <a id="login-btn" href="#">Iniciar sesión</a>
+        <span id="user-info" style="margin-left: 10px"></span>
+      </nav>
+    </header>
 
-  <section id="about" class="section">
-    <h2>Sobre mí</h2>
-    <p>Soy desarrollador backend con experiencia en Java, SpringBoot y Go. Apasionado por la tecnología y la arquitectura de software.</p>
-  </section>
+    <section id="about" class="section">
+      <h2>Sobre mí</h2>
+      <p>
+        Soy desarrollador backend con experiencia en Java, SpringBoot y Go.
+        Apasionado por la tecnología y la arquitectura de software.
+      </p>
+    </section>
 
-  <section id="projects" class="section">
-    <h2>Proyectos</h2>
-    <div class="card-container">
-      <div class="card">
-        <h3>EcoSurprise</h3>
-        <p>Migración de e-commerce de Spring Boot a Go con JWT y GORM.</p>
+    <section id="projects" class="section">
+      <h2>Proyectos</h2>
+      <div class="card-container">
+        <div class="card">
+          <h3>EcoSurprise</h3>
+          <p>Migración de e-commerce de Spring Boot a Go con JWT y GORM.</p>
+        </div>
+        <div class="card">
+          <h3>API NodeJS</h3>
+          <p>Backend ligero usando Express y TypeScript.</p>
+        </div>
       </div>
-      <div class="card">
-        <h3>API NodeJS</h3>
-        <p>Backend ligero usando Express y TypeScript.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="contact" class="section">
-    <h2>Contacto</h2>
-    <form id="contact-form">
-      <input type="text" placeholder="Tu nombre" required />
-      <input type="email" placeholder="Tu correo" required />
-      <textarea placeholder="Tu mensaje" required></textarea>
-      <button type="submit">Enviar</button>
-    </form>
-  </section>
+    <section id="contact" class="section">
+      <h2>Contacto</h2>
+      <form id="contact-form">
+        <input type="text" placeholder="Tu nombre" required />
+        <input type="email" placeholder="Tu correo" required />
+        <textarea placeholder="Tu mensaje" required></textarea>
+        <button type="submit">Enviar</button>
+      </form>
+    </section>
 
-  <footer>
-    <p>&copy; 2025 Yeison. Todos los derechos reservados.</p>
-  </footer>
+    <footer>
+      <p>&copy; 2025 Yeison. Todos los derechos reservados.</p>
+    </footer>
 
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 
+    <script>
+      const clientId = "tq54p47btss1nenupoo24qh9k";
+      const domain = "us-east-2e0mow1c4p.auth.us-east-2.amazoncognito.com";
+      const redirectUri = 'https%3A%2F%2Fmaster.dakzwxpxapqz8.amplifyapp.com%2F';
 
-  <script>
-  const clientId = 'tq54p47btss1nenupoo24qh9k'; 
-  const domain = 'us-east-2e0mow1c4p.auth.us-east-2.amazoncognito.com';
-  const redirectUri = 'https%3A%2F%2Fmaster.dakzwxpxapqz8.amplifyapp.com%2F';
+      const loginBtn = document.getElementById("login-btn");
+      const userInfo = document.getElementById("user-info");
 
-  function redirectToLogin() {
-    const loginUrl = `https://${domain}/login?client_id=${clientId}&response_type=code&scope=email+openid&redirect_uri=${redirectUri}`;
-    window.location.href = loginUrl;
-  }
+      function redirectToLogin() {
+        const loginUrl = `https://${domain}/login?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=email+openid+profile`;
+        window.location.href = loginUrl;
+      }
 
-  function getToken() {
-    const hash = window.location.hash.substring(1);
-    const params = new URLSearchParams(hash);
-    return params.get('id_token');
-  }
+      function getTokenFromUrl() {
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
+        return params.get("id_token");
+      }
 
-  function decodeJwt(token) {
-    if (!token) return null;
-    const payload = token.split('.')[1];
-    const decoded = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
-    return JSON.parse(decoded);
-  }
+      function decodeJwt(token) {
+        if (!token) return null;
+        const payload = token.split(".")[1];
+        const decoded = atob(payload.replace(/-/g, "+").replace(/_/g, "/"));
+        return JSON.parse(decoded);
+      }
 
-  const token = getToken();
-  const user = decodeJwt(token);
+      function logout() {
+        localStorage.removeItem("id_token");
+        const logoutUrl = `https://${domain}/logout?client_id=${clientId}&logout_uri=${redirectUri}`;
+        window.location.href = logoutUrl;
+      }
 
-  const loginBtn = document.getElementById("login-btn");
+      function handleAuth() {
+        const tokenFromUrl = getTokenFromUrl();
+        if (tokenFromUrl) {
+          localStorage.setItem("id_token", tokenFromUrl);
+          window.history.replaceState(null, "", redirectUri); // limpia el hash
+        }
 
-  if (user) {
-    loginBtn.innerText = `Hola, ${user.email || user['cognito:username']}`;
-    loginBtn.href = `https://${domain}/logout?client_id=${clientId}&logout_uri=${redirectUri}`;
-    loginBtn.title = "Cerrar sesión";
-  } else {
-    loginBtn.addEventListener("click", redirectToLogin);
-  }
-</script>
+        const token = tokenFromUrl || localStorage.getItem("id_token");
+        const user = decodeJwt(token);
 
-</body>
+        if (user) {
+          loginBtn.innerText = "Cerrar sesión";
+          loginBtn.href = "#";
+          loginBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            logout();
+          });
+
+          // Mostrar info del usuario
+          userInfo.innerText = `Bienvenido, ${
+            user.email || user["cognito:username"]
+          }`;
+        } else {
+          loginBtn.innerText = "Iniciar sesión";
+          loginBtn.href = "#";
+          loginBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            redirectToLogin();
+          });
+        }
+      }
+
+      handleAuth();
+    </script>
+  </body>
 </html>
