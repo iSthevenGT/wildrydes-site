@@ -56,10 +56,10 @@
   <script>
   const clientId = 'tq54p47btss1nenupoo24qh9k'; 
   const domain = 'us-east-2e0mow1c4p.auth.us-east-2.amazoncognito.com';
-  const redirectUri = 'https://master.dakzwxpxapqz8.amplifyapp.com/';
+  const redirectUri = 'https%3A%2F%2Fmaster.dakzwxpxapqz8.amplifyapp.com%2F';
 
   function redirectToLogin() {
-    const loginUrl = `https://${domain}/login?client_id=${clientId}&response_type=token&scope=email+openid+profile&redirect_uri=${redirectUri}`;
+    const loginUrl = `https://${domain}/login?client_id=${clientId}&response_type=code&scope=email+openid&redirect_uri=${redirectUri}`;
     window.location.href = loginUrl;
   }
 
