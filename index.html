@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mi Portafolio - Yeison</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Yeison</h1>
+    <nav>
+      <a href="#about">Sobre mí</a>
+      <a href="#projects">Proyectos</a>
+      <a href="#contact">Contacto</a>
+    </nav>
+  </header>
+
+  <section id="about" class="section">
+    <h2>Sobre mí</h2>
+    <p>Soy desarrollador backend con experiencia en Java, Spring Boot y Go. Apasionado por la tecnología y la arquitectura de software.</p>
+  </section>
+
+  <section id="projects" class="section">
+    <h2>Proyectos</h2>
+    <div class="card-container">
+      <div class="card">
+        <h3>EcoSurprise</h3>
+        <p>Migración de e-commerce de Spring Boot a Go con JWT y GORM.</p>
+      </div>
+      <div class="card">
+        <h3>API NodeJS</h3>
+        <p>Backend ligero usando Express y TypeScript.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section">
+    <h2>Contacto</h2>
+    <form id="contact-form">
+      <input type="text" placeholder="Tu nombre" required />
+      <input type="email" placeholder="Tu correo" required />
+      <textarea placeholder="Tu mensaje" required></textarea>
+      <button type="submit">Enviar</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Yeison. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
