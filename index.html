@@ -65,7 +65,7 @@
       const userInfo = document.getElementById("user-info");
 
       function redirectToLogin() {
-        const loginUrl = `https://${domain}/login?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=email+openid+profile`;
+        const loginUrl = `https://${domain}/login?client_id=${clientId}&response_type=token&scope=email+openid&redirect_uri=${redirectUri}`;
         window.location.href = loginUrl;
       }
 
